@@ -31,6 +31,16 @@ test('Parse SQL Query', () => {
     expect(parsed).toEqual({
         fields: ['id', 'name'],
         table: 'sample',
-        whereClause:null
+        whereClauses: [] // Corrected property name
+    });
+});
+
+test('Parse SQL Query with WHERE Clause', () => {
+    const query = 'SELECT id, name FROM sample WHERE age = 25';
+    const parsed = parseQuery(query);
+    expect(parsed).toEqual({
+        fields: ['id', 'name'],
+        table: 'sample',
+        whereClauses: [{ field: 'age', operator: '=', value: '25' }] // Updated expectation for WHERE clause handling
     });
 });
