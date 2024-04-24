@@ -1,5 +1,5 @@
 const {readCSV} = require('../../src/csvReader');
-const {executeSELECTQuery } = require('../../src/queryExecutor');
+const {executeSELECTQuery } = require('../../src/index');
 const { parseJoinClause, parseSelectQuery } = require('../../src/queryParser');
 
 test('Read CSV File', async () => {
@@ -742,7 +742,7 @@ test('Execute SQL Query with LIMIT and ORDER BY clause', async () => {
 
 test('Error Handling with Malformed Query', async () => {
     const query = 'SELECT FROM table'; // intentionally malformed
-    await expect(executeSELECTQuery(query)).rejects.toThrow("Error executing query: Query parsing error: Invalid SELECT format");
+    await expect(executeSELECTQuery(query)).rejects.toThrow("Failed to execute query: Query parsing error: Invalid SELECT clause. Ensure it follows 'SELECT field1, field2 FROM table' format.");
 });
 
 test('Basic DISTINCT Usage', async () => {
