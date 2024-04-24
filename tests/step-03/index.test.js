@@ -20,7 +20,10 @@
 
 // tests/index.test.js
 
-const parseQuery = require('../src/queryParser');
+const readCSV = require('../../src/csvReader');
+const parseQuery = require('../../src/queryParser');
+
+
 
 test('Parse SQL Query', () => {
     const query = 'SELECT id, name FROM sample';
