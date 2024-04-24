@@ -15,8 +15,11 @@ test('Parse SQL Query', () => {
     const parsed = parseQuery(query);
     expect(parsed).toEqual({
         fields: ['id', 'name'],
+        joinCondition: null,
+        joinTable: null,
         table: 'sample',
-        whereClauses:[]
+        //whereClause: null
+        whereClauses: []
     });
 });
 
@@ -29,3 +32,4 @@ test('Execute SQL Query', async () => {
     expect(result[0]).not.toHaveProperty('age');
     expect(result[0]).toEqual({ id: '1', name: 'John' });
 });
+
