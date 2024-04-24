@@ -1,18 +1,28 @@
-// src/index.js
+
 
 const parseQuery = require('./queryParser');
 const readCSV = require('./csvReader');
+
+function evaluateCondition(row, clause) {
+    const { field, operator, value } = clause;
+    switch (operator) {
+        case '=': return row[field] === value;
+        case '!=': return row[field] !== value;
+        case '>': return row[field] > value;
+        case '<': return row[field] < value;
+        case '>=': return row[field] >= value;
+        case '<=': return row[field] <= value;
+        default: throw new Error(`Unsupported operator: ${operator}`);
+    }
+}
 
 async function executeSELECTQuery(query) {
     const { fields, table, whereClauses } = parseQuery(query);
     const data = await readCSV(`${table}.csv`);
 
-    // Apply WHERE clause filtering
+    // Apply WHERE clause filtering using evaluateCondition function
     const filteredData = whereClauses.length > 0
-        ? data.filter(row => whereClauses.every(clause => {
-            // You can expand this to handle different operators
-            return row[clause.field] === clause.value;
-        }))
+        ? data.filter(row => whereClauses.every(clause => evaluateCondition(row, clause)))
         : data;
 
     // Select the specified fields
@@ -26,3 +36,4 @@ async function executeSELECTQuery(query) {
 }
 
 module.exports = executeSELECTQuery;
+
